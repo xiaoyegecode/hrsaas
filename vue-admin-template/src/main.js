@@ -9,10 +9,14 @@ import store from './store'
 import router from './router'
 import '@/icons' // icon
 import './permission'
+import * as directives from '@/directives'
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
+Object.keys(directives).forEach(ele => {
+  Vue.directive(ele,directives[ele])
+})
 
 Vue.config.productionTip = false
 
