@@ -20,9 +20,8 @@ router.beforeEach((to, from, next) => {
     if (whiteList.includes(to.path)) {
       // 如果找到了 表示在在名单里面
       next() // 放行
-    } else { 
+    } else {
       next('/login')
     }
   }
-  
 })
