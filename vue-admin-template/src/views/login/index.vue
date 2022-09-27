@@ -53,7 +53,7 @@ export default {
     }
     return {
       loginForm: {
-        mobile: '13800000003',
+        mobile: '13800000002',
         password: '123456'
       },
       passwordType: 'password',
