@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="新增角色" width="40%" :visible.sync="dialogVisible" :before-close="handleClose">
+    <el-dialog :title="title" width="40%" :visible.sync="dialogVisible" :before-close="handleClose">
       <el-form ref="roleDialogForm" label-width="80px" :model="formData" :rules="rules">
         <el-form-item prop="name" label="角色">
           <el-input v-model="formData.name" />
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { addRoleAPI } from '@/api/setting'
+import { addRoleAPI, updateRole } from '@/api/setting'
 export default {
   name: 'addRole',
   data() {
@@ -39,25 +39,33 @@ export default {
       default: false
     }
   },
+  computed: {
+    title() {
+      return this.formData.id ? '编辑角色' : '新增角色'
+    }
+  },
   methods: {
     handleClose() {
       this.$emit('update:dialog-visible', false)
       this.$refs.roleDialogForm.resetFields()
+      this.formData = { }
     },
+    // 新增功能
     async submit() {
       try {
         this.$refs.roleDialogForm.validate()
         this.loading = true
-        await addRoleAPI(this.formData)
+        this.formData.id ? await updateRole(this.formData) : await addRoleAPI(this.formData)
         this.$emit('refreshList')
-        this.$message.success('角色新增成功')
+        this.$message.success(this.formData.id ?'编辑成功' : '新增成功')
         this.handleClose()
       } catch (error) {
         console.log(error);
       } finally {
         this.loading = false
       }
-    }
+    },
+    // 删除功能  删除前需要二次确认  Message Box 组件
   }
 }
 </script>
