@@ -40,6 +40,7 @@ export default {
   },
   methods: {
     handleCommand(type) {
+      // console.log(type)
       if (type === 'add') {
         this.$emit('addDept', this.treeNode)
       }

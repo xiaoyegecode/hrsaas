@@ -1,7 +1,7 @@
 <template>
   <div class="departments-container">
     <el-card>
-      <TreeTools :treeNode="company" :isRoot="false"></TreeTools>
+      <TreeTools :treeNode="company" :isRoot="false" @addDept="handleDept"></TreeTools>
     </el-card>
     <!-- 树形结构 -->
     <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
