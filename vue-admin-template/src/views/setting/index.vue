@@ -9,7 +9,7 @@
             </el-button>
           </el-row>
           <!-- 表格 -->
-          <el-table width="100%" :data="tableData" v-loading="loading">
+          <el-table v-loading="loading" width="100%" :data="tableData">
             <el-table-column label="序号" width="120" type="index" />
             <el-table-column label="角色名称" prop="name" width="240" />
             <el-table-column label="描述" prop="description" />
@@ -23,12 +23,12 @@
           </el-table>
           <!-- 分页器 -->
           <el-row type="flex" justify="end" align="middle" style="height:60px">
-            <el-pagination 
-              background
+            <el-pagination
               v-if="total>0"
+              background
               :total="total"
               :current-page.sync="page.page"
-              :page-size.sync= "page.pagesize"
+              :page-size.sync="page.pagesize"
               :page-sizes="[2,5,10,15]"
               layout="prev, pager, next, sizes, total"
               @current-change="getRoleList"
@@ -39,11 +39,11 @@
 
         <!-- 公司信息tab -->
         <el-tab-pane label="公司信息" name="second">
-          <companyInfo/>
-      </el-tab-pane>
+          <companyInfo />
+        </el-tab-pane>
       </el-tabs>
     </el-card>
-    <addRole ref="addRole" :dialog-visible.sync="dialogVisible" @refreshList="getRoleList"></addRole>
+    <addRole ref="addRole" :dialog-visible.sync="dialogVisible" @refreshList="getRoleList" />
   </div>
 </template>
 
@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     // 明明有数据，却是最后一页没有数据
-    //解决方案：total 大于0 并且 rows的length === 0 这种情况并不是没有数据 是有的，
+    // 解决方案：total 大于0 并且 rows的length === 0 这种情况并不是没有数据 是有的，
     // 要重新发起请求 然后page要减一
     async getRoleList() {
       try {
@@ -85,7 +85,7 @@ export default {
           this.getRoleList()
         }
       } catch (error) {
-        console.log(errr)
+        console.log(error)
       } finally {
         this.loading = false
       }
@@ -107,10 +107,10 @@ export default {
         })
         await deleteRole(id)
         this.getRoleList()
-        this.$message.success('删除角色成功') 
-        console.log("success");
+        this.$message.success('删除角色成功')
+        console.log('success')
       } catch (error) {
-        console.log("error");
+        console.log('error')
       }
     }
   }
