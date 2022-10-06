@@ -7,7 +7,7 @@
     <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
       <TreeTools slot-scope="{ data }" :treeNode="data" @addDept="handleDept"></TreeTools>
     </el-tree>
-    <AddDepartments :showDialog.sync="dialogVisible" :treeNode="currentNode" />
+    <AddDepartments :showDialog.sync="dialogVisible" :treeNode="currentNode" @refreshDepts="getDepartments" />
   </div>
 </template>
 
