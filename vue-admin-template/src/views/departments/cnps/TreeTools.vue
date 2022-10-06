@@ -26,12 +26,13 @@
 </template>
 
 <script>
+import { delDepartmentsAPI } from '@/api'
 export default {
   name: 'TreeTools',
   props: {
     treeNode: {
       type: Object, // 对象类型
-      required: true 
+      required: true
     },
     isRoot: {
       type: Boolean,
@@ -43,6 +44,17 @@ export default {
       // console.log(type)
       if (type === 'add') {
         this.$emit('addDept', this.treeNode)
+      } else if (type === 'edit') {
+        this.$emit('editDept', this.treeNode)
+      } else {
+        this.$confirm('是否确认删除该部门', '提示', {
+          type: 'warning'
+        }).then(async res => {
+          return delDepartmentsAPI(this.treeNode.id)
+        }).then(res => {
+          this.$emit('refreshDepts') // 触发自定义事件
+          this.$message.success('删除部门成功')
+        })
       }
     }
   }

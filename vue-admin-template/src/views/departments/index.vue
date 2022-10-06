@@ -1,13 +1,13 @@
 <template>
-  <div class="departments-container">
+  <div class="departments-container" v-loading="loading">
     <el-card>
-      <TreeTools :treeNode="company" :isRoot="false" @addDept="handleDept"></TreeTools>
+      <TreeTools :treeNode="company" :isRoot="false" @addDept="handleDept" @editDept="editDept"></TreeTools>
     </el-card>
     <!-- 树形结构 -->
     <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
-      <TreeTools slot-scope="{ data }" :treeNode="data" @addDept="handleDept"></TreeTools>
+      <TreeTools slot-scope="{ data }" :treeNode="data" @addDept="handleDept" @editDept="editDept" @refreshDepts="getDepartments"></TreeTools>
     </el-tree>
-    <AddDepartments :showDialog.sync="dialogVisible" :treeNode="currentNode" @refreshDepts="getDepartments" />
+    <AddDepartments ref="addDept" :showDialog.sync="dialogVisible" :treeNode="currentNode" @refreshDepts="getDepartments" />
   </div>
 </template>
 
@@ -27,7 +27,8 @@ export default {
         label: 'name' // 表示 从这个属性显示内容
       },
       dialogVisible: false,
-      currentNode: {}
+      currentNode: {},
+      loading: false
     }
   },
   created() {
@@ -35,13 +36,23 @@ export default {
   },
   methods: {
     async getDepartments() {
-      const  { depts, companyName }  = await getDepartmentsAPI()
-      this.departs = tranListToTreeData(depts, '')
-      this.company = { name: companyName, manager: '负责人', id: ''}
+      try {
+        this.loading = true
+        const  { depts, companyName }  = await getDepartmentsAPI()
+        this.departs = tranListToTreeData(depts, '')
+        this.company = { name: companyName, manager: '负责人', id: ''}
+      } finally {
+        this.loading = false
+      }
     },
     handleDept(node) {
       this.dialogVisible = true
       this.currentNode = node
+    },
+    editDept(node) {
+      this.dialogVisible = true
+      this.currentNode = { ...node }
+      this.$refs.addDept.formData = { ...node }
     }
   }
 }
