@@ -4,7 +4,7 @@
       <el-tabs v-model="activeName">
         <el-tab-pane label="角色管理" name="first">
           <el-row :gutter="10">
-            <el-button type="primary" size="small" icon="el-icon-plus" style="margin-left:10px" @click="addrole">
+            <el-button type="primary" size="small" icon="el-icon-circle-plus-outline" style="margin-left:10px" @click="addrole">
               新增角色
             </el-button>
           </el-row>
