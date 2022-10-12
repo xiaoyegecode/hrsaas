@@ -37,6 +37,19 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
+  // excel 上传组件路由配置
+  {
+    path: '/import',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'import',
+        component: () => import('@/views/import/index'),
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
