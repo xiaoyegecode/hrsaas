@@ -34,18 +34,18 @@ import JobInfo from '../JobInfo'
 import Cookies from 'js-cookie'
 export default {
   name: 'Detail',
+  components: { UserInfo, JobInfo },
   data() {
     return {
-      activeName: Cookies.get('activeName')|| 'first',
+      activeName: Cookies.get('activeName') || 'first',
       userInfo: {},
       rules: {
         username: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
         password: [{ required: true, message: '密码不能为空', trigger: 'blur' },
-                  { min: 6, message: '密码长度最少6位', trigger: 'blur' }]
+          { min: 6, message: '密码长度最少6位', trigger: 'blur' }]
       }
     }
   },
-  components: {UserInfo, JobInfo},
   created() {
     this.getUserDetail()
   },
@@ -65,7 +65,7 @@ export default {
       }
     },
     handleClick() {
-      Cookies.set('activeName',this.activeName)
+      Cookies.set('activeName', this.activeName)
     }
   }
 }

@@ -1,5 +1,6 @@
 <template>
   <div class="user-info">
+    <i class="el-icon-printer" @click="$router.push('/employees/print/' + userId)"></i>
     <!-- 个人信息 -->
     <el-form label-width="220px">
       <!-- 工号 入职时间 -->
@@ -11,12 +12,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="入职时间">
-            <el-date-picker
-              v-model="userInfo.timeOfEntry"
-              type="date"
-              class="inputW"
-              value-format="YYYY-MM-DD"
-            />
+            <el-date-picker v-model="userInfo.timeOfEntry" type="date" class="inputW" value-format="YYYY-MM-DD" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -43,12 +39,7 @@
         <el-col :span="12">
           <el-form-item label="聘用形式">
             <el-select v-model="userInfo.formOfEmployment" class="inputW">
-              <el-option
-                v-for="item in EmployeeEnum.hireType"
-                :key="item.id"
-                :label="item.value"
-                :value="item.id"
-              />
+              <el-option v-for="item in EmployeeEnum.hireType" :key="item.id" :label="item.value" :value="item.id" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -58,7 +49,7 @@
         <el-col :span="12">
           <el-form-item label="员工头像">
             <!-- 放置上传图片 -->
-           
+            <ImageUpload ref="employeesHeader" @on-success="headerImgSuccess" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -77,12 +68,8 @@
         <div class="title">基础信息</div>
         <el-form-item label="最高学历">
           <el-select v-model="formData.theHighestDegreeOfEducation" class="inputW2">
-            <el-option
-              v-for="item in EmployeeEnum.highestDegree"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in EmployeeEnum.highestDegree" :key="item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </el-form-item>
         <!-- 个人头像 -->
@@ -90,15 +77,12 @@
 
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
+          <ImageUpload ref="employeesHeader2" @on-success="employeesPicSuccess" />
         </el-form-item>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
-            <el-option
-              v-for="item in EmployeeEnum.isOverseas"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in EmployeeEnum.isOverseas" :key="item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="护照号">
@@ -115,12 +99,8 @@
         </el-form-item>
         <el-form-item label="婚姻状况">
           <el-select v-model="formData.maritalStatus" class="inputW2">
-            <el-option
-              v-for="item in EmployeeEnum.maritaStatus"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in EmployeeEnum.maritaStatus" :key="item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="生日">
@@ -131,22 +111,14 @@
         </el-form-item>
         <el-form-item label="星座">
           <el-select v-model="formData.constellation" class="inputW2">
-            <el-option
-              v-for="item in EmployeeEnum.constellation"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in EmployeeEnum.constellation" :key="item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="血型">
           <el-select v-model="formData.bloodType" class="inputW2">
-            <el-option
-              v-for="item in EmployeeEnum.bloodType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in EmployeeEnum.bloodType" :key="item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="户籍所在地">
@@ -156,13 +128,8 @@
           <el-input v-model="formData.politicalOutlook" class="inputW2" />
         </el-form-item>
         <el-form-item label="入党时间">
-          <el-date-picker
-            v-model="formData.timeToJoinTheParty"
-            type="date"
-            placeholder="选择日期"
-            class="inputW"
-            value-format="yyyy-MM-dd"
-          />
+          <el-date-picker v-model="formData.timeToJoinTheParty" type="date" placeholder="选择日期" class="inputW"
+            value-format="yyyy-MM-dd" />
         </el-form-item>
         <el-form-item label="存档机构">
           <el-input v-model="formData.archivingOrganization" placeholder="请输入" />
@@ -199,7 +166,8 @@
           <el-input v-model="formData.postalAddress" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="联系手机">
-          <el-input v-model="formData.contactTheMobilePhone" placeholder="11位字符" maxlength="11" class="inputW" @change.native="handlePhone(2)" />
+          <el-input v-model="formData.contactTheMobilePhone" placeholder="11位字符" maxlength="11" class="inputW"
+            @change.native="handlePhone(2)" />
         </el-form-item>
         <el-form-item label="个人邮箱">
           <el-input v-model="formData.personalMailbox" placeholder="请输入" type="mail" class="inputW" />
@@ -232,22 +200,20 @@
         <div class="title">教育信息</div>
         <el-form-item label="学历类型">
           <el-select v-model="formData.educationalType" placeholder="请选择">
-            <el-option
-              v-for="item in EmployeeEnum.educationType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in EmployeeEnum.educationType" :key="item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="毕业学校">
           <el-input v-model="formData.graduateSchool" placeholder="请输入" class="inputW2" />
         </el-form-item>
         <el-form-item label="入学时间">
-          <el-date-picker v-model="formData.enrolmentTime" type="data" placeholder="请输入时间" class="inputW" value-format="yyyy-MM-dd" />
+          <el-date-picker v-model="formData.enrolmentTime" type="data" placeholder="请输入时间" class="inputW"
+            value-format="yyyy-MM-dd" />
         </el-form-item>
         <el-form-item label="毕业时间">
-          <el-date-picker v-model="formData.graduationTime" type="data" placeholder="请输入时间" class="inputW" value-format="yyyy-MM-dd" />
+          <el-date-picker v-model="formData.graduationTime" type="data" placeholder="请输入时间" class="inputW"
+            value-format="yyyy-MM-dd" />
         </el-form-item>
         <el-form-item label="专业">
           <el-input v-model="formData.major" placeholder="请输入" class="inputW" />
@@ -283,99 +249,134 @@
 
 <script>
 import EmployeeEnum from '@/api/constant/employees'
-import { getPersonalDetailAPI, updatePersonalAPI, getUserDetailById, saveUserDetailById} from '@/api'
+import { getPersonalDetailAPI, updatePersonalAPI, getUserDetailById, saveUserDetailById } from '@/api'
+import ImageUpload from '@/components/ImageUpload/index.vue'
 export default {
-  name: 'UserInfo',
+  name: "UserInfo",
   data() {
     return {
       userId: this.$route.params.id,
-      EmployeeEnum, // 员工枚举数据
+      EmployeeEnum,
       userInfo: {},
       formData: {
-        userId: '',
-        username: '', // 用户名
-        sex: '', // 性别
-        mobile: '', // 手机
-        companyId: '', // 公司id
-        departmentName: '', // 部门名称
+        userId: "",
+        username: "",
+        sex: "",
+        mobile: "",
+        companyId: "",
+        departmentName: "",
         //  onTheJobStatus: '', // 在职状态 no
-        dateOfBirth: '', // 出生日期
-        timeOfEntry: '', // 入职时间
-        theHighestDegreeOfEducation: '', // 最高学历
-        nationalArea: '', // 国家
-        passportNo: '', // 护照号
-        idNumber: '', // 身份证号
-        idCardPhotoPositive: '', // 身份证照正
-        idCardPhotoBack: '', // 身份证照正
-        nativePlace: '', // 籍贯
-        nation: '', // 民族
-        englishName: '', // 英文名字
-        maritalStatus: '', // 婚姻状况
-        staffPhoto: '', // 员工照片
-        birthday: '', // 生日
-        zodiac: '', // 属相
-        age: '', // 年龄
-        constellation: '', // 星座
-        bloodType: '', // 血型
-        domicile: '', // 户籍所在地
-        politicalOutlook: '', // 政治面貌
-        timeToJoinTheParty: '', // 入党时间
-        archivingOrganization: '', // 存档机构
-        stateOfChildren: '', // 子女状态
-        doChildrenHaveCommercialInsurance: '1', // 保险状态
-        isThereAnyViolationOfLawOrDiscipline: '', // 违法违纪状态
-        areThereAnyMajorMedicalHistories: '', // 重大病史
-        qq: '', // QQ
-        wechat: '', // 微信
-        residenceCardCity: '', // 居住证城市
-        dateOfResidencePermit: '', // 居住证办理日期
-        residencePermitDeadline: '', // 居住证截止日期
-        placeOfResidence: '', // 现居住地
-        postalAddress: '', // 通讯地址
-        contactTheMobilePhone: '', // 联系手机
-        personalMailbox: '', // 个人邮箱
-        emergencyContact: '', // 紧急联系人
-        emergencyContactNumber: '', // 紧急联系电话
-        socialSecurityComputerNumber: '', // 社保电脑号
-        providentFundAccount: '', // 公积金账号
-        bankCardNumber: '', // 银行卡号
-        openingBank: '', // 开户行
-        educationalType: '', // 学历类型
-        graduateSchool: '', // 毕业学校
-        enrolmentTime: '', // 入学时间
-        graduationTime: '', // 毕业时间
-        major: '', // 专业
-        graduationCertificate: '', // 毕业证书
-        certificateOfAcademicDegree: '', // 学位证书
-        homeCompany: '', // 上家公司
-        title: '', // 职称
-        resume: '', // 简历
-        isThereAnyCompetitionRestriction: '', // 有无竞业限制
-        proofOfDepartureOfFormerCompany: '', // 前公司离职证明
-        remarks: '' // 备注
-      }
-    }
+        dateOfBirth: "",
+        timeOfEntry: "",
+        theHighestDegreeOfEducation: "",
+        nationalArea: "",
+        passportNo: "",
+        idNumber: "",
+        idCardPhotoPositive: "",
+        idCardPhotoBack: "",
+        nativePlace: "",
+        nation: "",
+        englishName: "",
+        maritalStatus: "",
+        staffPhoto: "",
+        birthday: "",
+        zodiac: "",
+        age: "",
+        constellation: "",
+        bloodType: "",
+        domicile: "",
+        politicalOutlook: "",
+        timeToJoinTheParty: "",
+        archivingOrganization: "",
+        stateOfChildren: "",
+        doChildrenHaveCommercialInsurance: "1",
+        isThereAnyViolationOfLawOrDiscipline: "",
+        areThereAnyMajorMedicalHistories: "",
+        qq: "",
+        wechat: "",
+        residenceCardCity: "",
+        dateOfResidencePermit: "",
+        residencePermitDeadline: "",
+        placeOfResidence: "",
+        postalAddress: "",
+        contactTheMobilePhone: "",
+        personalMailbox: "",
+        emergencyContact: "",
+        emergencyContactNumber: "",
+        socialSecurityComputerNumber: "",
+        providentFundAccount: "",
+        bankCardNumber: "",
+        openingBank: "",
+        educationalType: "",
+        graduateSchool: "",
+        enrolmentTime: "",
+        graduationTime: "",
+        major: "",
+        graduationCertificate: "",
+        certificateOfAcademicDegree: "",
+        homeCompany: "",
+        title: "",
+        resume: "",
+        isThereAnyCompetitionRestriction: "",
+        proofOfDepartureOfFormerCompany: "",
+        remarks: "" // 备注
+      },
+      employeeAvatar: ""
+    };
   },
   created() {
-    this.getPersonalDetail()
-    this.getUserDetailById()
+    this.getPersonalDetail();
+    this.getUserDetailById();
   },
   methods: {
+    // 获取个人信息
     async getPersonalDetail() {
-      this.formData = await getPersonalDetailAPI(this.userId) 
+      this.formData = await getPersonalDetailAPI(this.userId);
+      if (this.formData.staffPhoto) {
+        this.$refs.employeesHeader2.fileList.push({
+          url: this.formData.staffPhoto
+        });
+      }
     },
     async updatePersonal() {
-      await updatePersonalAPI(this.formData)
-      this.$message.success('保存成功')
+      try {
+        if (this.$refs.employeesHeader2.loading) {
+          return this.$message.error('头像还在上传')
+        }
+        await updatePersonalAPI(this.formData);
+        this.$message.success("保存成功");
+      } catch (error) {
+        this.$message.error("保存用户信息失败");
+      }
     },
+    // 获取基础信息
     async getUserDetailById() {
-      this.userInfo = await getUserDetailById(this.userId)
+      this.userInfo = await getUserDetailById(this.userId);
+      if (this.userInfo.staffPhoto) {
+        this.$refs.employeesHeader.fileList.push({
+          url: this.userInfo.staffPhoto
+        });
+      }
     },
     async saveUserDetail() {
-      await saveUserDetailById(this.userInfo)
-      this.$message.success('保存成功')
+      try {
+        if (this.$refs.employeesHeader.loading) {
+          return this.$message.error('头像还在上传')
+        }
+        await saveUserDetailById(this.userInfo);
+        this.$message.success("保存用户信息成功");
+      } catch (error) {
+        this.$message.error("保存用户信息失败");
+      }
+    },
+    headerImgSuccess(data) {
+      this.userInfo.staffPhoto = data.imgUrl
+    },
+    employeesPicSuccess(data) {
+      this.formData.staffPhoto = data.imgUrl
     }
-  }
+  },
+  components: { ImageUpload }
 }
 </script>
 

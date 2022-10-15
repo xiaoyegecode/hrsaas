@@ -14,6 +14,17 @@
     <el-card>
       <el-table border :data="list" v-loading="loading">
         <el-table-column label="序号" sortable="" width="80" type="index" />
+        <el-table-column label="头像" align="center">
+          <template slot-scope="{ row }">
+            <img 
+              :src="row.staffPhoto"
+              v-imgerror="require('@/assets/common/bigUserHeader.png')"
+              alt=""
+              style="border-radius: 50%; width: 100px; height: 100px; padding: 10px"
+              @click="genQrCode(row.staffPhoto)"
+            >
+          </template>
+        </el-table-column>
         <el-table-column label="姓名" prop="username" />
         <el-table-column label="工号" prop="workNumber" />
         <el-table-column label="聘用形式" prop="formOfEmployment" :formatter="formatterFn" />
@@ -52,6 +63,9 @@
       </el-row>
     </el-card>
     <AddEmployee :dialogVisible.sync="showDialog" />
+    <el-dialog title="头像二维码" width="40%" :visible.sync="ercodeDialog">
+      <canvas ref="canvas" />
+    </el-dialog>
   </div>
 </template>
 
@@ -59,6 +73,7 @@
 import EmployeeEnum from '@/api/constant/employees'
 import AddEmployee from './AddEmployee'
 import { getEmployeeListAPI, delEmployeeAPI } from '@/api'
+import QRcode from 'qrcode'
 export default {
   name: 'Employees',
   components: { AddEmployee },
@@ -72,7 +87,8 @@ export default {
       total: 0, // 总数,
       loading: false,
       hireType: EmployeeEnum.hireType,
-      showDialog:false
+      showDialog: false,
+      ercodeDialog: false
     }
   },
   mounted() {
@@ -157,6 +173,14 @@ export default {
     // 查看详情
     goDetails(row) {
       this.$router.push('/employees/detail/' + row.id)
+    },
+    // 二维码
+    genQrCode(staffPhoto) {
+      if (!staffPhoto) return this.$message.error('该用户还未设置头像')
+      this.ercodeDialog = true
+      this.$nextTick(() => {
+        QRcode.toCanvas(this.$refs.canvas, staffPhoto)
+      })
     }
   }
 }
