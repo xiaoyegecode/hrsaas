@@ -1,6 +1,12 @@
 <template>
   <div class="job-info">
-    <i class="el-icon-printer" @click="$router.push('/employees/print/' + userId)"></i>
+    <el-row type="flex" justify="end">
+      <el-tooltip content="打印岗位信息">
+        <router-link :to="`/employees/print/${userId}?type=job`">
+          <i class="el-icon-printer" />
+        </router-link>
+      </el-tooltip>
+    </el-row>
     <!-- 基础信息 -->
     <el-form label-width="220px">
       <div class="block">
@@ -18,11 +24,7 @@
         </el-form-item> -->
         <el-form-item label="转正状态">
           <el-select v-model="formData.stateOfCorrection" placeholder="请选择" disabled>
-            <el-option
-              v-for="item in EmployeeEnum.stateOfCorrection"
-              :key="item.value"
-              :value="item.value"
-            />
+            <el-option v-for="item in EmployeeEnum.stateOfCorrection" :key="item.value" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="职级">
@@ -45,12 +47,8 @@
           <el-input v-model="formData.adjustmentAgedays" type="number" placeholder="请输入" class="inputW" />
         </el-form-item>
         <el-form-item label="首次参加工作时间">
-          <el-date-picker
-            v-model="formData.workingTimeForTheFirstTime"
-            type="date"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd"
-          />
+          <el-date-picker v-model="formData.workingTimeForTheFirstTime" type="date" placeholder="选择日期"
+            value-format="yyyy-MM-dd" />
         </el-form-item>
         <el-form-item label="调整工龄">
           <el-input v-model="formData.adjustmentOfLengthOfService" placeholder="0.00年" class="inputW" disabled />
@@ -60,55 +58,30 @@
       <div class="block">
         <div class="title">合同信息</div>
         <el-form-item class="formInfo" label="首次合同开始时间：">
-          <el-date-picker
-            v-model="formData.initialContractStartTime"
-            type="date"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd"
-          />
+          <el-date-picker v-model="formData.initialContractStartTime" type="date" placeholder="选择日期"
+            value-format="yyyy-MM-dd" />
         </el-form-item>
         <el-form-item label="首次合同结束时间">
-          <el-date-picker
-            v-model="formData.firstContractTerminationTime"
-            type="date"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd"
-          />
+          <el-date-picker v-model="formData.firstContractTerminationTime" type="date" placeholder="选择日期"
+            value-format="yyyy-MM-dd" />
         </el-form-item>
         <el-form-item label="现合同开始时间">
-          <el-date-picker
-            v-model="formData.currentContractStartTime"
-            type="date"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd"
-          />
+          <el-date-picker v-model="formData.currentContractStartTime" type="date" placeholder="选择日期"
+            value-format="yyyy-MM-dd" />
         </el-form-item>
         <el-form-item label="现合同结束时间">
-          <el-date-picker
-            v-model="formData.closingTimeOfCurrentContract	"
-            type="date"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd"
-          />
+          <el-date-picker v-model="formData.closingTimeOfCurrentContract	" type="date" placeholder="选择日期"
+            value-format="yyyy-MM-dd" />
         </el-form-item>
         <el-form-item label="合同期限">
           <el-select v-model="formData.contractPeriod" class="filter-item">
-            <el-option
-              v-for="item in EmployeeEnum.contractPeriod"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in EmployeeEnum.contractPeriod" :key="item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="续签次数">
           <el-select v-model="formData.renewalNumber" class="filter-item">
-            <el-option
-              v-for="item in EmployeeEnum.renewalCount"
-              :key="item.id"
-              :label="item.value"
-              :value="item.id"
-            />
+            <el-option v-for="item in EmployeeEnum.renewalCount" :key="item.id" :label="item.value" :value="item.id" />
           </el-select>
         </el-form-item>
       </div>
@@ -117,32 +90,20 @@
         <div class="title">招聘信息</div>
         <el-form-item label="其他招聘渠道">
           <el-select v-model="formData.otherRecruitmentChannels" placeholder="请选择">
-            <el-option
-              v-for="item in EmployeeEnum.resumeSource"
-              :key="item.id"
-              :label="item.value"
-              :value="item.value"
-            />
+            <el-option v-for="item in EmployeeEnum.resumeSource" :key="item.id" :label="item.value"
+              :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="招聘渠道">
           <el-select v-model="formData.recruitmentChannels" placeholder="请选择">
-            <el-option
-              v-for="item in EmployeeEnum.resumeSource"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in EmployeeEnum.resumeSource" :key="item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="社招/校招">
           <el-select v-model="formData.socialRecruitment" placeholder="请选择">
-            <el-option
-              v-for="item in EmployeeEnum.hireSourceType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in EmployeeEnum.hireSourceType" :key="item.value" :label="item.label"
+              :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="推荐企业/人">
@@ -160,7 +121,7 @@
 
 <script>
 import EmployeeEnum from '@/api/constant/employees'
-import {getJobDetailAPI, updateJobAPI } from '@/api'
+import { getJobDetailAPI, updateJobAPI } from '@/api'
 export default {
   name: 'JobInfo',
   data() {
