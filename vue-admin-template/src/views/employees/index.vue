@@ -43,7 +43,7 @@
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
-            <el-button type="text" size="small">角色</el-button>
+            <el-button type="text" size="small" @click="showRole(row.id)">角色</el-button>
             <el-button type="text" size="small" @click="del(row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -63,6 +63,7 @@
       </el-row>
     </el-card>
     <AddEmployee :dialogVisible.sync="showDialog" />
+    <AssignRole ref="assignRoleRef" :userId="currentId" />
     <el-dialog title="头像二维码" width="40%" :visible.sync="ercodeDialog">
       <canvas ref="canvas" />
     </el-dialog>
@@ -72,11 +73,12 @@
 <script>
 import EmployeeEnum from '@/api/constant/employees'
 import AddEmployee from './AddEmployee'
+import AssignRole from './AssignRole'
 import { getEmployeeListAPI, delEmployeeAPI } from '@/api'
 import QRcode from 'qrcode'
 export default {
   name: 'Employees',
-  components: { AddEmployee },
+  components: { AddEmployee, AssignRole },
   data() {
     return {
       page: {
@@ -88,7 +90,8 @@ export default {
       loading: false,
       hireType: EmployeeEnum.hireType,
       showDialog: false,
-      ercodeDialog: false
+      ercodeDialog: false,
+      currentId: ''
     }
   },
   mounted() {
@@ -181,6 +184,11 @@ export default {
       this.$nextTick(() => {
         QRcode.toCanvas(this.$refs.canvas, staffPhoto)
       })
+    },
+    showRole(id) {
+      this.currentId = id
+      this.$refs.assignRoleRef.dialogFormV()
+      this.$refs.assignRoleRef.getUserDetailById()
     }
   }
 }

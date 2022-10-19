@@ -1,3 +1,5 @@
 export * from './departments'
 export * from './employees'
 export * from './user'
+export * from './role'
+export * from './permission'

@@ -15,9 +15,9 @@
             <el-table-column label="描述" prop="description" />
             <el-table-column label="操作" width="240">
               <template slot-scope="{ row }">
-                <el-button size="small" type="success">分配权限</el-button>
-                <el-button size="small" type="primary" @click="editRole(row)">编辑</el-button>
-                <el-button size="small" type="danger" @click="delRole(row.id)">删除</el-button>
+                <el-button v-ishasPermission="'role-assign'" size="small" type="success" @click="setPermission(row.id)">分配权限</el-button>
+                <el-button v-ishasPermission="'role-edit'" size="small" type="primary" @click="editRole(row)">编辑</el-button>
+                <el-button v-ishasPermission="'role-delete'" size="small" type="danger" @click="delRole(row.id)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -44,6 +44,8 @@
       </el-tabs>
     </el-card>
     <addRole ref="addRole" :dialog-visible.sync="dialogVisible" @refreshList="getRoleList" />
+    <!-- 分配权限弹出层 -->
+    <setPermission ref="setPermissionRef" />
   </div>
 </template>
 
@@ -51,9 +53,10 @@
 import { getRoleListAPI, deleteRole } from '@/api/setting'
 import addRole from './cnps/addRole.vue'
 import companyInfo from './cnps/companyInfo.vue'
+import setPermission from './cnps/setPermission.vue'
 export default {
-  name: 'setting',
-  components: { addRole, companyInfo },
+  name: 'Setting',
+  components: { addRole, companyInfo, setPermission },
   data() {
     return {
       activeName: 'first',
@@ -112,6 +115,10 @@ export default {
       } catch (error) {
         console.log('error')
       }
+    },
+    setPermission(id) {
+      this.$refs.setPermissionRef.dialogFormV()
+      this.$refs.setPermissionRef.roleId = id
     }
   }
 }

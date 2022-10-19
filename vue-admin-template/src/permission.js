@@ -1,5 +1,6 @@
 import router from '@/router'
 import store from '@/store'
+import { asyncRoutes } from '@/router'
 const whiteList = ['/login', '/404']
 // 2. 首先判断有无token
 // 2.1.1 判断是否处于登录页面，是的话 跳首页 否则 直接留在当前页（直接放行 next()）
@@ -9,7 +10,14 @@ router.beforeEach(async(to, from, next) => {
   //  首先判断有无token
   if (store.getters.token) {
     if (!store.getters.userId) {
-      await store.dispatch('user/getUserInfo')
+      const roles = await store.dispatch('user/getUserInfo')
+      const filterRouters = asyncRoutes.filter(item => {
+        return roles.menus.includes(item.meta.id)
+      })
+      router.addRoutes([...filterRouters, { path: '*', redirect: '/404', hidden: true }])
+      store.commit('permission/setRoutes',filterRouters)
+      // 动态添加的路由规则 后续必须加上 next(to.path)
+      next(to.path)
     }
     // 如果有token 继续判断是不是去登录页
     if (to.path === '/login') {
